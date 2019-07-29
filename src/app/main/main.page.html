@@ -1,19 +1,14 @@
 <ion-header>
   <ion-toolbar>
-    <ion-title>main</ion-title>
+    <ion-title>卫视频道</ion-title>
   </ion-toolbar>
 </ion-header>
 
 <ion-content>
   <ion-content>
-    <ion-item *ngFor="let item of listAdd" [routerLink]="[ '/home', item.address ]">
+    <ion-item *ngFor="let item of listAdd" [routerLink]="[ '/home' ]" [queryParams]="item">
       <ion-label>{{item.name}}</ion-label>
     </ion-item>
-  
-    <ion-item [routerLink]="[ '/h5-video']">
-      <ion-label>纯2222H599999999999999999</ion-label>
-    </ion-item>
-  </ion-content>
 
   <ion-button (click)="onCheckUpdate()">
   检查更新

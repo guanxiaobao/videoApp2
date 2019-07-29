@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
-import { CodePush, SyncStatus } from '@ionic-native/code-push/ngx';
+import { CodePush, SyncStatus , InstallMode} from '@ionic-native/code-push/ngx';
+import { promise } from 'protractor';
 
 @Injectable({
   providedIn: 'root'
@@ -21,8 +22,8 @@ export class UpdateAppService {
 
 
   CheckForUpdate() {
-    this.codePush.notifyApplicationReady(this.onNotifySucceeded, this.onNotifyFailed);
-    this.codePush.checkForUpdate(this.onUpdateCheck, this.onError);
+    this.codePush.notifyApplicationReady();
+    this.codePush.checkForUpdate();
   }
 
 
@@ -30,13 +31,16 @@ export class UpdateAppService {
 
     if (!update) {
       console.log('The app is up to date.');
+      return null;
     } else {
       if (!update.failedInstall) {
         console.log('There is an update available. Remote package:' + JSON.stringify(update));
         console.log('A CodePush update is available. Package hash: ' + update.packageHash);
         update.download(this.onPackageDownloaded, this.onError, this.OnProgress);
+        return update;
       } else {
         console.log('The available update was attempted before and failed.');
+        return null;
       }
     }
   }

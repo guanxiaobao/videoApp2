@@ -27,6 +27,15 @@ const routes: Routes = [
           ]
         },
         {
+          path: 'local-file',
+          children: [
+            {
+              path: '',
+              loadChildren: '../local-file/local-file.module#LocalFilePageModule'
+            }
+          ]
+        },
+        {
           path: '',
           redirectTo: '/tabs/main',
           pathMatch: 'full'

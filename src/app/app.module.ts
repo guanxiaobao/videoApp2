@@ -10,8 +10,9 @@ import { AppComponent } from './app.component';
 import { AppRoutingModule } from './app-routing.module';
 
 import { StreamingMedia } from '@ionic-native/streaming-media/ngx';
-
+import { ScreenOrientation } from '@ionic-native/screen-orientation/ngx';
 import { CodePush } from '@ionic-native/code-push/ngx';
+import { File } from '@ionic-native/file/ngx';
 
 @NgModule({
   declarations: [AppComponent],
@@ -21,7 +22,9 @@ import { CodePush } from '@ionic-native/code-push/ngx';
     StatusBar,
     SplashScreen,
     StreamingMedia,
+    ScreenOrientation,
     CodePush,
+    File,
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy }
   ],
   bootstrap: [AppComponent]
