@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { File } from '@ionic-native/file/ngx';
 
 @Component({
   selector: 'app-local-file',
@@ -7,9 +8,14 @@ import { Component, OnInit } from '@angular/core';
 })
 export class LocalFilePage implements OnInit {
 
-  constructor() { }
+  constructor(private file: File) { }
 
   ngOnInit() {
+
+    var data = this.file.listDir(this.file.dataDirectory, 'move');
+    console.log(data);
+
+    data.then((ss) => console.log(ss));
   }
 
 }

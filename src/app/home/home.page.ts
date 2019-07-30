@@ -4,6 +4,7 @@ import { ScreenOrientation } from '@ionic-native/screen-orientation/ngx';
 import { identifierModuleUrl } from '@angular/compiler';
 declare var videojs: any;
 import * as $ from 'jquery';
+import { Move } from '../modes/move';
 
 
 @Component({
@@ -20,29 +21,31 @@ export class HomePage {
 
   public show: boolean;
   public player: any;
-  public move: any;
-
+  public move: Move;
+  public tiele = '';
   private OnSceenChanged: any;
   // constructor() {
   //   this.show = true;
   // }
   constructor(private rout: ActivatedRoute,
     private screenOrientation: ScreenOrientation) {
-
+    this.rout.queryParams.subscribe((data: Move) => {
+      this.move = data;
+      this.tiele = this.move.name;
+      this.play();
+    });
   }
 
   // tslint:disable-next-line: use-life-cycle-interface
   ngOnInit(): void {
 
-    this.rout.queryParams.subscribe((data) => {
-      this.move = data;
-      this.play();
-    });
     console.log('屏幕方向');
     console.log(this.screenOrientation.type);
     this.OnSceenChanged = () => {
       console.log('屏幕翻转21');
       console.log(screen.orientation.type);
+
+
     };
     screen.orientation.addEventListener('change', this.OnSceenChanged);
 
@@ -54,9 +57,6 @@ export class HomePage {
       //   screen.orientation.unlock();
       // }
     });
-    document.onfullscreenchange = () => {
-      console.log('视频全屏2' + this.player.isFullscreen());
-    };
   }
 
   play() {
@@ -75,6 +75,11 @@ export class HomePage {
       console.log('evssssssssssssssssssssssssssssssent');
     });
     console.log(btn);
+
+
+    this.player.on('fullscreenchange', function (ev) {
+      console.log('全屏触发');
+    });
   }
 
   // tslint:disable-next-line: use-life-cycle-interface

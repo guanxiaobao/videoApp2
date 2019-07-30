@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { UpdateAppService } from '../services/update-app.service';
 import { ActivatedRoute } from "@angular/router";
+import { Move } from '../modes/move';
 
 
 @Component({
@@ -11,13 +12,11 @@ import { ActivatedRoute } from "@angular/router";
 export class MainPage implements OnInit {
   public adr: string;
 
-  public listAdd: any[] = [];
+  public listAdd: Move[] = [];
   constructor(private update: UpdateAppService,
       private rout:ActivatedRoute) { }
 
   ngOnInit() {
-    this.adr = 'http://ivi.bupt.edu.cn/hls/cctv1hd.m3u8';
-
     this.listAdd.push({
       address: 'http://ivi.bupt.edu.cn/hls/cctv1hd.m3u8',
       type: 'application/x-mpegURL',

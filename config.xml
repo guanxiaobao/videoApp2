@@ -20,6 +20,8 @@
     <preference name="SplashScreen" value="screen" />
     <preference name="SplashScreenDelay" value="3000" />
     <platform name="android">
+        <preference name="AndroidPersistentFileLocation" value="Internal" />
+        <preference name="AndroidPersistentFileLocation" value="Compatibility" />
         <preference name="CodePushDeploymentKey" value="3VQK5cM8L6oLfjtVCufx3hl7h1Rgc6b88578-07be-4703-b257-52d1a4d20b97" />
         <preference name="APP_SECRET" value="8ffb8c95-e6c7-4aea-af0a-ea5ec1458a25" />
         <edit-config file="app/src/main/AndroidManifest.xml" mode="merge" target="/manifest/application" xmlns:android="http://schemas.android.com/apk/res/android">
