@@ -1,13 +1,25 @@
 <ion-header>
   <ion-toolbar>
-    <ion-title>本地视频</ion-title>
+    <ion-title>本地视频</ion-title>  
+    <ion-button  slot="end">
+      <ion-icon slot="icon-only" name="menu"></ion-icon>
+    </ion-button>
   </ion-toolbar>
-  <ion-tab-button (click)="openCamera()">
-    <ion-icon name="camera"></ion-icon>
-    <ion-label>Photo</ion-label>
-  </ion-tab-button>
+
 </ion-header>
 
 <ion-content>
 
+  <ion-item>
+    <ion-label>文件夹</ion-label>
+    <ion-input  [(ngModel)]="fileName"></ion-input>
+  </ion-item>
+ 
+<ion-button (click)="onClick()">
+  读取文件
+</ion-button>
+
+<ion-item *ngFor="let item of movies" [routerLink]="[ '/home' ]" [queryParams]="item">
+  <ion-label>{{item.name}}</ion-label>
+</ion-item>
 </ion-content>

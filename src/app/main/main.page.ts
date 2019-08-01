@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { UpdateAppService } from '../services/update-app.service';
-import { ActivatedRoute } from "@angular/router";
+import { ActivatedRoute } from '@angular/router';
 import { Move } from '../modes/move';
 
 
