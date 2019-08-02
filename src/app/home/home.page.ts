@@ -5,7 +5,7 @@ import { identifierModuleUrl } from '@angular/compiler';
 declare var videojs: any;
 import * as $ from 'jquery';
 import { Move } from '../modes/move';
-
+import { StatusBar } from '@ionic-native/status-bar/ngx';
 
 @Component({
   selector: 'app-home',
@@ -27,8 +27,10 @@ export class HomePage {
   // constructor() {
   //   this.show = true;
   // }
-  constructor(private rout: ActivatedRoute,
-    private screenOrientation: ScreenOrientation) {
+  constructor(
+    private rout: ActivatedRoute,
+    private screenOrientation: ScreenOrientation,
+    private stausbar: StatusBar) {
     this.rout.queryParams.subscribe((data: Move) => {
       this.move = data;
       this.tiele = this.move.name;
@@ -44,18 +46,17 @@ export class HomePage {
     this.OnSceenChanged = () => {
       console.log('屏幕翻转21');
       console.log(screen.orientation.type);
-
-
+      this.SetPlayOrientation(screen.orientation.type);
     };
     screen.orientation.addEventListener('change', this.OnSceenChanged);
 
     document.addEventListener('fullscreenchange', () => {
       console.log('视频全屏' + this.player.isFullscreen());
-      // if (this.player.isFullscreen()) {
-      //   screen.orientation.lock('landscape-primary');
-      // } else {
-      //   screen.orientation.unlock();
-      // }
+      if (this.player.isFullscreen()) {
+        screen.orientation.lock('landscape-primary');
+      } else {
+        screen.orientation.unlock();
+      }
     });
   }
 
@@ -110,15 +111,16 @@ export class HomePage {
       case 'landscape-primary': // 横向模式
         this.player.exitFullscreen();
         this.player.isFullscreen(true);
-
+        this.stausbar.overlaysWebView(true);
         break;
       case 'landscape-secondary': // 次要横向模式
         this.player.exitFullscreen();
         this.player.isFullscreen(true);
-
+        this.stausbar.overlaysWebView(true);
         break;
       case 'lportrait-primary': // 纵向模式
         this.player.exitFullscreen();
+        this.stausbar.overlaysWebView(false);
         break;
       case 'portrait-secondary': // 次要纵向模式
         break;

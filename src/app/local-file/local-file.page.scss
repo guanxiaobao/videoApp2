@@ -1,0 +1,14 @@
+.moviesInfo{
+    position: relative;
+    height: 100%;
+    .title{
+        position: absolute;
+        top: 50%;
+        transform: translateY(-50%);
+    }
+    .path{
+        position: absolute;
+        bottom: 0;
+        font-size: x-small;
+    }
+}

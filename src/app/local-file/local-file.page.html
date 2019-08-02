@@ -1,7 +1,7 @@
 <ion-header>
   <ion-toolbar>
-    <ion-title>本地视频</ion-title>  
-    <ion-button  slot="end">
+    <ion-title>本地视频</ion-title>
+    <ion-button slot="end">
       <ion-icon slot="icon-only" name="menu"></ion-icon>
     </ion-button>
   </ion-toolbar>
@@ -9,17 +9,25 @@
 </ion-header>
 
 <ion-content>
-
+<!-- 
   <ion-item>
     <ion-label>文件夹</ion-label>
-    <ion-input  [(ngModel)]="fileName"></ion-input>
+    <ion-input [(ngModel)]="fileName"></ion-input>
   </ion-item>
- 
-<ion-button (click)="onClick()">
-  读取文件
-</ion-button>
 
-<ion-item *ngFor="let item of movies" [routerLink]="[ '/home' ]" [queryParams]="item">
-  <ion-label>{{item.name}}</ion-label>
-</ion-item>
+  <ion-button (click)="onClick()"> 
+    读取文件
+  </ion-button>
+-->
+  <ion-list lines="full" >
+    <ion-item *ngFor="let item of movies" [routerLink]="[ '/home' ]" [queryParams]="item" (press)="LongPress(item)">
+      <ion-thumbnail slot="start">
+        <img src={{item.thumbnail}}>
+      </ion-thumbnail>
+      <div class="moviesInfo">
+      <ion-label class="title">{{item.name}}</ion-label>  
+      <ion-label class="path">{{item.path}}</ion-label>
+    </div>
+    </ion-item>
+  </ion-list>
 </ion-content>
