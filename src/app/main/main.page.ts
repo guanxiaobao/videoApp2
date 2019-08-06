@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 import { UpdateAppService } from '../services/update-app.service';
-import { ActivatedRoute } from '@angular/router';
 import { Move } from '../modes/move';
 
 @Component({
@@ -12,8 +11,7 @@ export class MainPage implements OnInit {
   public adr: string;
 
   public listAdd: Move[] = [];
-  constructor(private update: UpdateAppService,
-    private rout: ActivatedRoute) { }
+  constructor(private update: UpdateAppService) { }
 
   ngOnInit() {
     this.listAdd.push(new Move(
@@ -86,4 +84,5 @@ export class MainPage implements OnInit {
   onCheckUpdate() {
     this.update.CheckForUpdate();
   }
+
 }

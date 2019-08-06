@@ -7,6 +7,7 @@ import { VideoEditor } from '@ionic-native/video-editor/ngx';
 import { PressMenuComponent } from './component/press-menu/press-menu.component';
 
 
+
 @Component({
   selector: 'app-local-file',
   templateUrl: './local-file.page.html',
@@ -14,6 +15,7 @@ import { PressMenuComponent } from './component/press-menu/press-menu.component'
 })
 export class LocalFilePage implements OnInit {
 
+ 
   public movietype: any[] = ['mp4', 'ogg', 'webm', 'flv'];
   public movietypefull: any[] = ['mp4', 'ogg', 'webm', 'mkv', '3gp', 'avi', 'mov', 'rmvb', 'rm', 'flv'];
 
@@ -118,4 +120,5 @@ export class LocalFilePage implements OnInit {
     });
     return await popover.present();
   }
+
 }

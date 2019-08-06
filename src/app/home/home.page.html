@@ -1,4 +1,4 @@
-<ion-header>
+<ion-header *ngIf="showHeader">
   <ion-toolbar>
     <ion-title>{{tiele}}</ion-title>
 
@@ -11,10 +11,10 @@
 <ion-content>
    
   <div >
-    <video id="myvideo" preload="auto"  autoplay="autoplay"  style="width:100%; height:100%; object-fit:contain;" (onfullscreenchange)="screenChange"   class="video-js vjs-default-skin" controls > 
+    <video id="myvideo" preload="auto"  autoplay="autoplay"  style="width:100%; height:100%; object-fit:contain;"  class="video-js vjs-default-skin" controls > 
       <source  /> 
   </video>  
 </div>
-
+ 
 </ion-content>
 

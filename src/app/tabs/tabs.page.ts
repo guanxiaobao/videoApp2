@@ -1,22 +1,12 @@
-import { Component, OnInit } from '@angular/core';
-import { StatusBar } from '@ionic-native/status-bar/ngx';
+import { Component } from '@angular/core';
+
 @Component({
   selector: 'app-tabs',
-  templateUrl: './tabs.page.html',
-  styleUrls: ['./tabs.page.scss'],
+  templateUrl: 'tabs.page.html',
+  styleUrls: ['tabs.page.scss']
 })
-export class TabsPage implements OnInit {
+export class TabsPage {
 
-  constructor(private statusBar: StatusBar) { }
+  constructor() {}
 
-  ngOnInit() {
-  }
-
-
-  ngAfterViewInit(): void {
-    //Called after ngAfterContentInit when the component's view has been initialized. Applies to components only.
-    //Add 'implements AfterViewInit' to the class.
-    // this.statusBar.overlaysWebView(true);
-    // this.statusBar.styleDefault(); //深色文本
-  }
 }
