@@ -38,6 +38,16 @@ const routes: Routes = [
         ]
       },
       {
+        path: 'testpage',
+        children: [
+          {
+            path: '',
+            loadChildren: () =>
+              import('../testpage/testpage.module').then(m => m.TestpagePageModule)
+          }
+        ]
+      },
+      {
         path: '',
         redirectTo: '/tabs/main',
         pathMatch: 'full'

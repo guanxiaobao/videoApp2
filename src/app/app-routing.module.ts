@@ -8,7 +8,8 @@ const routes: Routes = [
   },
   { path: 'main', loadChildren: './main/main.module#MainPageModule' },
   { path: 'local-file', loadChildren: './local-file/local-file.module#LocalFilePageModule' },
-  { path: 'home', loadChildren: './home/home.module#HomePageModule' }
+  { path: 'home', loadChildren: './home/home.module#HomePageModule' },
+  { path: 'testpage', loadChildren: './testpage/testpage.module#TestpagePageModule' }
 ];
 @NgModule({
   imports: [

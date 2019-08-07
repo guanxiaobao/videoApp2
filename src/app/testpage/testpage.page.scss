@@ -1,0 +1,42 @@
+ion-content {
+  .touch {
+    position: relative;
+   // display: flex;
+    width: 100%;
+    height: 100%;
+    text-align: center;
+    .touchleft {
+      position: absolute;
+      float: left;
+      flex: 1;
+      background-color: blue;
+       width: 50%;
+        height: 100%;
+    }
+    .touchright {
+      flex: 1;
+      background-color: yellow;
+      float: right;
+      width: 50%;
+      height: 100%;
+    }
+
+    ion-item {
+      background-color: transparent;
+    }
+
+  @at-root  .rangdiv  { 
+     opacity: 0;
+      position: relative;
+      top: 50%;
+      left: 50%;
+      transform: translateY(-50%) translateX(-50%); 
+      margin: auto;
+     // background-color: teal;
+      width: 20em;
+      height: 3em;
+      display: flex; 
+      align-items: center;
+    }
+  }
+}

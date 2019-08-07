@@ -9,12 +9,27 @@
 </ion-header>
 
 <ion-content>
-   
-  <div >
-    <video id="myvideo" preload="auto"  autoplay="autoplay"  style="width:100%; height:100%; object-fit:contain;"  class="video-js vjs-default-skin" controls > 
-      <source  /> 
-  </video>  
-</div>
- 
-</ion-content>
 
+  <div id="touch" preload="auto" (touchstart)="touchstart($event)" (touchmove)="onTouchMove($event,'full')"
+    (touchend)="onTouchEnd($event,'full')">
+
+<!-- 
+    <div class="touchleft" (touchstart)="touchstart($event)" (touchmove)="onTouchMove($event,'left')"
+      (touchend)="onTouchEnd($event,'left')"></div>
+    <div class="touchright" (touchstart)="touchstart($event)" (touchmove)="onTouchMove($event,'right')"
+      (touchend)="onTouchEnd($event,'right')"></div> -->
+
+   
+
+    <video id="myvideo" #myvideo autoplay="autoplay" class="video-js vjs-default-skin" style=" background-color: #000;" controls>
+      <source />
+    </video>
+  </div>
+
+  <div class="rangdiv" #rangdiv>
+    <ion-icon [name]="iocName" slot="start" color="light"></ion-icon>
+    <ion-range min="0" max="1" dualKnobs="true" step="0.01" ticks="true" value="0"  color="light" [(ngModel)]="rangvalue">
+    </ion-range>
+  </div>
+</ion-content>
+<!-- style="width:100%; height:100%; object-fit:contain;" -->

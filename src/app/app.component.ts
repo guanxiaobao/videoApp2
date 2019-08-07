@@ -60,6 +60,7 @@ export class AppComponent {
 
     setTimeout(() => {
       this.backButtonPress = false;
+      console.log('重置backbuttonpress');
     }, 2000);
   }
 

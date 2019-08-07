@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { UpdateAppService } from '../services/update-app.service';
 import { Move } from '../modes/move';
+import { Brightness } from '@ionic-native/brightness/ngx';
 
 @Component({
   selector: 'app-main',
@@ -11,7 +12,10 @@ export class MainPage implements OnInit {
   public adr: string;
 
   public listAdd: Move[] = [];
-  constructor(private update: UpdateAppService) { }
+  public liang: any;
+  constructor(
+    private update: UpdateAppService,
+    private brightness: Brightness) { }
 
   ngOnInit() {
     this.listAdd.push(new Move(
@@ -85,4 +89,14 @@ export class MainPage implements OnInit {
     this.update.CheckForUpdate();
   }
 
+
+  liangdu() {
+    this.brightness.setBrightness(this.liang);
+    console.log(`设置亮度：${this.liang}`);
+    console.log(`当前亮度${this.brightness.getBrightness()}`);
+
+  }
+  shengyin() {
+
+  }
 }

@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ScreenOrientation } from '@ionic-native/screen-orientation/ngx';
 import { identifierModuleUrl } from '@angular/compiler';
@@ -11,6 +11,10 @@ import { Platform, ToastController } from '@ionic/angular';
 import { AppMinimize } from '@ionic-native/app-minimize/ngx';
 import { BackgroundMode } from '@ionic-native/background-mode/ngx';
 import { Insomnia } from '@ionic-native/insomnia/ngx';
+import 'hammerjs';
+import { Brightness } from '@ionic-native/brightness/ngx';
+import { Media } from '@ionic-native/media/ngx';
+
 @Component({
   selector: 'app-home',
   templateUrl: './home.page.html',
@@ -19,23 +23,32 @@ import { Insomnia } from '@ionic-native/insomnia/ngx';
 export class HomePage implements OnInit {
 
   public url: string;
-
   public type: string;
-
   public show: boolean;
   public player: any;
   public move: Move;
   public tiele = '';
-  public showHeader: boolean = true;
+  public showHeader: boolean = true; // 是否显示标题
   private OnSceenChanged: any;
-
   private customBackButton: any;
   public decelement;
-  public backButtonevent: any;
-  private backButtonPress = 0;
-  // constructor() {
-  //   this.show = true;
-  // }
+
+  public backButtonevent: any;  // 返回按钮事件
+
+  public startX = 0; // 手指滑动开始x
+  public startY = 0; // 手指滑动开始y
+  public startT: number; // 手指滑动开始时间
+  public isMove = false; // 是否滑动
+  public brightnessValue: any; // 屏幕亮度
+  public vioceValue: any = 0.0; // 播放声音
+  public RangColor = 'primary';      // 滑块颜色
+  public rangvalue: any = 0.0;   // 滑动计算值
+
+  public ioclist: any[] = ['sunny', 'volume-mute', 'volume-low', 'volume-high', 'volume-off'];
+  public iocName = 'volume-low';
+
+  @ViewChild('rangdiv') rangdiv: ElementRef;
+  @ViewChild('myvideo') myvideo: ElementRef;
   constructor(
     private rout: ActivatedRoute,
     private rout2: Router,
@@ -45,27 +58,31 @@ export class HomePage implements OnInit {
     private toast: ToastController,
     private platform: Platform,
     private backgroundMode: BackgroundMode,
-    private insomnia: Insomnia) {
+    private insomnia: Insomnia,
+    private brightness: Brightness,
+    private media: Media) {
     this.rout.queryParams.subscribe((data: Move) => {
       this.move = data;
       this.tiele = this.move.name;
       this.play();
       this.backgroundMode.enable();
+
     });
   }
 
 
   ngOnInit(): void {
-    screen.orientation.onchange = (e) => {
-      console.log(e);
 
+    this.OnSceenChanged = (e) => {
+      console.log(e);
       this.SetPlayOrientation();
     };
+
+    screen.orientation.addEventListener('change', this.OnSceenChanged);
 
     document.addEventListener('fullscreenchange', () => {
 
       console.log('doc视频全屏' + this.player.isFullscreen());
-      console.log(this.isFullScreen());
       if (this.player.isFullscreen() && this.isFullScreen()) {
         screen.orientation.lock('landscape-primary');
         console.log('切换横屏');
@@ -76,6 +93,12 @@ export class HomePage implements OnInit {
     });
 
     this.registerBackButtonAction();
+
+    this.brightness.getBrightness().then((a) => {
+      console.log(`屏幕亮度${a}`);
+      this.brightnessValue = a;
+    });
+
   }
 
   isFullScreen() {
@@ -102,10 +125,8 @@ export class HomePage implements OnInit {
         () => console.log('success'),
         () => console.log('error')
       );
+
   }
-
-
-
 
   // tslint:disable-next-line: use-life-cycle-interface
   ngOnDestroy(): void {
@@ -161,7 +182,7 @@ export class HomePage implements OnInit {
         screen.orientation.lock('portrait-primary');
         screen.orientation.unlock();
       } else {
-        this.rout2.navigateByUrl('main');
+        this.rout2.navigateByUrl('tabs/main');
       }
     });
     console.log(this.customBackButton);
@@ -173,5 +194,100 @@ export class HomePage implements OnInit {
     if (this.customBackButton) {
       this.customBackButton.unsubscribe();
     }
+  }
+
+
+  onTouchMove(event: any, type: string) {
+
+    console.log(type);
+
+    const touch = event.touches[0];
+    const deltaX = touch.pageX - this.startX;
+    const deltaY = touch.pageY - this.startY;
+    if (Math.abs(deltaX - deltaY) > 3) {
+      this.isMove = true;
+    }
+    // 如果X方向上的位移大于Y方向，则认为是左右滑动
+    if (Math.abs(deltaX) > Math.abs(deltaY)) {
+      console.log(deltaX);
+      // todo :设置播放进度
+      if (deltaX > 0) {  // 判断手指滑动的方向// ? "right" : "left";
+        console.log(deltaX);
+      }
+    } else {
+      if (this.player.isFullscreen() == 'false') {
+        return;
+      }
+      this.rangdiv.nativeElement.style.opacity = 1;
+      // 按下位置在屏幕右半边设置声音  左边设置屏幕亮度
+      if (this.startX > screen.width / 2) {
+        this.iocName = this.ioclist[1];
+        this.rangvalue = this.vioceValue - (deltaY * 0.005);
+        if (this.rangvalue > 1) {
+          this.rangvalue = 1;
+          this.iocName = this.ioclist[3];
+          return;
+        }
+        if (this.rangvalue < 0) {
+          this.rangvalue = 0;
+          this.iocName = this.ioclist[4];
+          return;
+        }
+        const index: number = (this.rangvalue / 0.33);
+        this.iocName = this.ioclist[index];
+        console.log(`${index}    ${this.iocName}`);
+        console.log(`设置声音大小 ${this.rangvalue}`);
+        this.myvideo.nativeElement.volume = this.rangvalue;
+        // this.player.volume(this.rangvalue);
+      } else {
+        this.iocName = this.ioclist[0];
+        this.rangvalue = this.brightnessValue - (deltaY * 0.005);
+        if (this.rangvalue > 1) {
+          this.rangvalue = 1;
+        }
+        if (this.rangvalue < 0) {
+          this.rangvalue = 0;
+        }
+        console.log(`设置亮度 ${this.rangvalue}`);
+        this.brightness.setBrightness(this.rangvalue);
+      }
+    }
+  }
+
+  onTouchEnd(event: any, type: string) {
+    if (this.rangdiv.nativeElement.style.opacity == '0') {
+      return;
+    }
+
+    this.rangvalue = this.brightnessValue;
+    let op = 1;
+    const doc: any = document.getElementsByClassName('rangdiv');
+    setTimeout(() => {
+      const inter = setInterval(() => {
+        op = op - 0.1;
+        this.rangdiv.nativeElement.style.opacity = op;
+        if (op <= 0) {
+          clearInterval(inter);
+        }
+      }, 20);
+    }, 500);
+  }
+  touchstart(event: any) {
+    console.log('touchstart');
+
+    console.log(event);
+    console.log(event.touches[0]);
+    const touch = event.touches[0];
+    this.startX = touch.pageX;
+    this.startY = touch.pageY;
+    this.startT = new Date().getTime(); // 记录手指按下的开始时间
+    console.log(`$按下坐标 ${this.startX}    ${this.startY}`);
+    this.brightness.getBrightness().then(a => {
+      this.brightnessValue = a;
+    });
+    this.vioceValue = this.myvideo.nativeElement.volume;
+    this.rangvalue = 0;
+    console.log(`获取声音大小${this.vioceValue}`);
+    this.isMove = false;
   }
 }

@@ -1,10 +1,48 @@
-div{
+ion-content {
+  .touch {
+    position: relative;
+    background-color: #000;
+    // display: flex;
     width: 100%;
     height: 100%;
-}
-video{
-    background-color: #000;//因为有两个白边，所以更改此背景
-    width:100%;
-    height:100%;
-    object-fit:contain;
+    text-align: center;
+
+    // .touchleft {
+    //   position: absolute;
+    //   float: left;
+    //   flex: 1;
+    //   width: 50%;
+    //   height: 100%;
+    // }
+
+    // .touchright {
+    //   flex: 1;
+
+    //   float: right;
+    //   width: 50%;
+    //   height: 100%;
+    // }
+ 
+    @at-root .rangdiv {
+      opacity: 1;
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translateY(-50%) translateX(-50%);
+      margin: auto;
+      //  background-color: teal;
+      width: 15em;
+      height: 3em;
+      display: flex;
+      align-items: center;
+    }
+
+    @at-root  #myvideo {
+      position: unset;
+      background-color: #000; //因为有两个白边，所以更改此背景
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+    }
+  }
 }

@@ -19,7 +19,8 @@ import { WebView } from '@ionic-native/ionic-webview/ngx';
 import { AppMinimize } from '@ionic-native/app-minimize/ngx';
 import { BackgroundMode } from '@ionic-native/background-mode/ngx';
 import { Insomnia } from '@ionic-native/insomnia/ngx';   // Ionic 睡眠 Insomnia插件的安装(Installation)
-
+import { Brightness } from '@ionic-native/brightness/ngx';
+import { Media } from '@ionic-native/media/ngx';
 @NgModule({
   declarations: [AppComponent],
   entryComponents: [],
@@ -36,8 +37,10 @@ import { Insomnia } from '@ionic-native/insomnia/ngx';   // Ionic 睡眠 Insomni
     VideoEditor,
     BackgroundMode,
     Insomnia,
+    Brightness,
+    Media,
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy }
   ],
   bootstrap: [AppComponent]
 })
-export class AppModule {}
+export class AppModule { }

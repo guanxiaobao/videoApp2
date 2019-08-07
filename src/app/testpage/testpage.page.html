@@ -1,0 +1,27 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>testpage</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+
+
+
+  <div class="touch" preload="auto">
+    <div class="touchleft" (touchstart)="touchstart($event)" (touchmove)="onTouchMove($event,'left')"
+      (touchend)="onTouchEnd($event,'left')"></div>
+    <div class="touchright" (touchstart)="touchstart($event)" (touchmove)="onTouchMove($event,'right')"
+      (touchend)="onTouchEnd($event,'right')"></div>
+
+    <div class="rangdiv" #rangdiv>
+      <ion-icon name="volume-high" slot="start"></ion-icon>
+      <ion-range min="0" max="1" dualKnobs="true" step="0.01" ticks="true" value="0" [(ngModel)]="brightnessValue">
+      </ion-range>
+    </div>
+
+  </div>
+
+
+
+</ion-content>
