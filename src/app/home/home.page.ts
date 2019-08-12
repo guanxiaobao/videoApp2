@@ -215,13 +215,16 @@ export class HomePage implements OnInit {
         console.log(deltaX);
       }
     } else {
+      // 不全屏不执行 手势滑动
       if (this.player.isFullscreen() == 'false') {
         return;
       }
+
       this.rangdiv.nativeElement.style.opacity = 1;
       // 按下位置在屏幕右半边设置声音  左边设置屏幕亮度
       if (this.startX > screen.width / 2) {
         this.iocName = this.ioclist[1];
+
         this.rangvalue = this.vioceValue - (deltaY * 0.005);
         if (this.rangvalue > 1) {
           this.rangvalue = 1;
@@ -233,12 +236,12 @@ export class HomePage implements OnInit {
           this.iocName = this.ioclist[4];
           return;
         }
-        const index: number = (this.rangvalue / 0.33);
-        this.iocName = this.ioclist[index];
+        const index: number = (this.rangvalue / 0.34) + 1;
+        this.iocName = this.ioclist[index.toString()[0]];
         console.log(`${index}    ${this.iocName}`);
         console.log(`设置声音大小 ${this.rangvalue}`);
-        this.myvideo.nativeElement.volume = this.rangvalue;
-        // this.player.volume(this.rangvalue);
+       // this.myvideo.nativeElement.volume = this.rangvalue;
+        this.player.volume(this.rangvalue);
       } else {
         this.iocName = this.ioclist[0];
         this.rangvalue = this.brightnessValue - (deltaY * 0.005);
@@ -259,7 +262,7 @@ export class HomePage implements OnInit {
       return;
     }
 
-    this.rangvalue = this.brightnessValue;
+    /// this.rangvalue = this.brightnessValue;
     let op = 1;
     const doc: any = document.getElementsByClassName('rangdiv');
     setTimeout(() => {
