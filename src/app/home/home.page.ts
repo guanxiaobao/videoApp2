@@ -15,6 +15,7 @@ import 'hammerjs';
 import { Brightness } from '@ionic-native/brightness/ngx';
 import { Media } from '@ionic-native/media/ngx';
 
+
 @Component({
   selector: 'app-home',
   templateUrl: './home.page.html',
@@ -240,8 +241,9 @@ export class HomePage implements OnInit {
         this.iocName = this.ioclist[index.toString()[0]];
         console.log(`${index}    ${this.iocName}`);
         console.log(`设置声音大小 ${this.rangvalue}`);
-       // this.myvideo.nativeElement.volume = this.rangvalue;
-        this.player.volume(this.rangvalue);
+        // this.myvideo.nativeElement.volume = this.rangvalue;
+       // this.player.volume(this.rangvalue);
+      // this.nativeAudio.setVolumeForComplexAsset()
       } else {
         this.iocName = this.ioclist[0];
         this.rangvalue = this.brightnessValue - (deltaY * 0.005);
@@ -288,8 +290,9 @@ export class HomePage implements OnInit {
     this.brightness.getBrightness().then(a => {
       this.brightnessValue = a;
     });
-    this.vioceValue = this.myvideo.nativeElement.volume;
-    this.rangvalue = 0;
+
+    this.vioceValue =  // this.myvideo.nativeElement.volume;
+      this.rangvalue = 0;
     console.log(`获取声音大小${this.vioceValue}`);
     this.isMove = false;
   }

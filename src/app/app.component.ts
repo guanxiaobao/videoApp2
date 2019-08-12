@@ -32,6 +32,7 @@ export class AppComponent {
       this.statusBar.backgroundColorByHexString('＃33000000');
       this.splashScreen.hide();
       this.registerBackButtonAction();
+      
     });
   }
 
