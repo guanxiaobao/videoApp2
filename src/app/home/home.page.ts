@@ -14,6 +14,7 @@ import { Insomnia } from '@ionic-native/insomnia/ngx';
 import 'hammerjs';
 import { Brightness } from '@ionic-native/brightness/ngx';
 import { Media } from '@ionic-native/media/ngx';
+import { RangSliderComponent } from './componenets/rang-slider/rang-slider.component';
 
 
 @Component({
@@ -47,9 +48,12 @@ export class HomePage implements OnInit {
 
   public ioclist: any[] = ['sunny', 'volume-mute', 'volume-low', 'volume-high', 'volume-off'];
   public iocName = 'volume-low';
-
-  @ViewChild('rangdiv') rangdiv: ElementRef;
+  public rang: RangSliderComponent;
+  // @ViewChild('rangdiv') rangdiv: ElementRef;
   @ViewChild('myvideo') myvideo: ElementRef;
+  public rangdiv: HTMLElement;
+  public icon: any;
+  public rangSlider: any;
   constructor(
     private rout: ActivatedRoute,
     private rout2: Router,
@@ -113,13 +117,25 @@ export class HomePage implements OnInit {
       withCredentials: true
     };
     console.log(data);
-    this.player = videojs('myvideo');
+    const options = {};
+    this.player = videojs('myvideo', options, () => {
+      const rang = this.createEle();
+      this.player.el().appendChild(rang);
+
+      this.rangdiv = document.getElementById('rangdiv'); // .getElementsByClassName('rangdiv')[0];
+      this.icon = document.getElementById('icon'); // .getElementsByClassName('rangdiv')[0];
+      this.rangSlider = document.getElementById('range'); // .getElementsByClassName('rangdiv')[0];
+      // this.addComponent();
+    });
+
     this.player.src(data);
     this.player.play();
 
     this.player.on('fullscreenchange', () => {
       console.log('player 全屏更改');
     });
+
+    //const doc: any = document.getElementsByClassName('rangdiv');
 
     this.insomnia.keepAwake()
       .then(
@@ -217,36 +233,35 @@ export class HomePage implements OnInit {
       }
     } else {
       // 不全屏不执行 手势滑动
-      if (this.player.isFullscreen() == 'false') {
-        return;
-      }
+      // if (this.player.isFullscreen() == 'false') {
+      //   return;
+      // }
 
-      this.rangdiv.nativeElement.style.opacity = 1;
+      this.rangdiv.style.opacity = '1';
       // 按下位置在屏幕右半边设置声音  左边设置屏幕亮度
       if (this.startX > screen.width / 2) {
-        this.iocName = this.ioclist[1];
+        this.setIcon(this.ioclist[1]);
 
         this.rangvalue = this.vioceValue - (deltaY * 0.005);
         if (this.rangvalue > 1) {
           this.rangvalue = 1;
-          this.iocName = this.ioclist[3];
-          return;
+          this.setIcon(this.ioclist[3]);
         }
         if (this.rangvalue < 0) {
           this.rangvalue = 0;
-          this.iocName = this.ioclist[4];
-          return;
+          this.setIcon(this.ioclist[4]);
         }
+        console.log(this.rangSlider);
+
+        this.rangSlider.value = this.rangvalue; // .setAttribute('value', this.rangvalue);
         const index: number = (this.rangvalue / 0.34) + 1;
-        this.iocName = this.ioclist[index.toString()[0]];
+        this.setIcon(this.ioclist[index.toString()[0]]);
         console.log(`${index}    ${this.iocName}`);
         console.log(`设置声音大小 ${this.rangvalue}`);
-        // this.myvideo.nativeElement.volume = this.rangvalue;
-       // this.player.volume(this.rangvalue);
-      // this.nativeAudio.setVolumeForComplexAsset()
       } else {
-        this.iocName = this.ioclist[0];
+        this.setIcon(this.ioclist[0]);
         this.rangvalue = this.brightnessValue - (deltaY * 0.005);
+        this.rangSlider.value = this.rangvalue;
         if (this.rangvalue > 1) {
           this.rangvalue = 1;
         }
@@ -259,18 +274,24 @@ export class HomePage implements OnInit {
     }
   }
 
+
+  setIcon(name: string) {
+    this.iocName = name;
+    this.icon.name = name;
+  }
+
   onTouchEnd(event: any, type: string) {
-    if (this.rangdiv.nativeElement.style.opacity == '0') {
+    if (this.rangdiv.style.opacity == '0') {
       return;
     }
 
     /// this.rangvalue = this.brightnessValue;
     let op = 1;
-    const doc: any = document.getElementsByClassName('rangdiv');
+
     setTimeout(() => {
       const inter = setInterval(() => {
         op = op - 0.1;
-        this.rangdiv.nativeElement.style.opacity = op;
+        this.rangdiv.style.opacity = op.toString();
         if (op <= 0) {
           clearInterval(inter);
         }
@@ -279,7 +300,6 @@ export class HomePage implements OnInit {
   }
   touchstart(event: any) {
     console.log('touchstart');
-
     console.log(event);
     console.log(event.touches[0]);
     const touch = event.touches[0];
@@ -296,4 +316,62 @@ export class HomePage implements OnInit {
     console.log(`获取声音大小${this.vioceValue}`);
     this.isMove = false;
   }
+
+  addComponent() {
+    const Component = videojs.getComponent('Component');
+    const TitleBar = videojs.extend(Component, {
+      // player将被用来关联options中的参数
+      constructor: function (player, options) {
+        // 在做其它事之前先调用父类的构造函数是很重要的，
+        // 这样可以使父组件的所有特性在子组件中开箱即用。
+        Component.apply(this, arguments);
+        // 如果在options中传了text属性，那么更新这个组件的文字显示
+        if (options.text) {
+          this.updateRangContent(options.type, options.text);
+        }
+      },
+      createEl: function () {
+        return videojs.dom.createEl('div', {
+          //给元素加vjs-开头的样式名，是videojs内置样式约定俗成的做法
+          className: 'vjs-rang-bar'
+        });
+      },
+
+      updateRangContent: function (type, value) {
+
+      }
+    });
+    videojs.dom.appendContent(this.player.el(), `55555555555555<ion-icon [name]="iocName" slot="start" color="light"></ion-icon>
+        <ion-range min="0" max="1" dualKnobs="true" step="0.01" ticks="true" value="0"  color="light" [(ngModel)]="rangvalue"/>`);
+
+    videojs.registerComponent('RangBar', TitleBar);
+    console.log('222222222222222222222222222s');
+
+  }
+
+
+  createEle() {
+    const html = `
+    <ion-icon name="sunny" id="icon" slot="start" color="light"></ion-icon>
+    <ion-range min="0" max="1" id="range" dualKnobs="true" step="0.01" ticks="true" value="0"  color="light" >
+    </ion-range>
+     `;
+    const ctrlBar = document.createElement('div');
+    ctrlBar.setAttribute('id', 'rangdiv');
+    ctrlBar.style.cssText = `
+    opacity: 0;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translateY(-50%) translateX(-50%);
+    margin: auto;
+    //  background-color: teal;
+    width: 15em;
+    height: 3em;
+    align-items: center;
+    display: flex;`;
+    ctrlBar.innerHTML = html;
+    return ctrlBar;
+  }
+
 }

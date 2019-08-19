@@ -1,0 +1,12 @@
+.rang{ 
+    opacity: 1;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translateY(-50%) translateX(-50%);
+    margin: auto;
+    //  background-color: teal;
+    width: 15em;
+    height: 3em;
+    align-items: center;
+}
